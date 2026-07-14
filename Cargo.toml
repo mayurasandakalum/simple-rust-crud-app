@@ -5,7 +5,13 @@ edition = "2021"
 
 [dependencies]
 axum = "0.7"
-tokio = { version = "1", features = ["full"] }
+# Only the features the app actually uses — much faster to compile than "full".
+tokio = { version = "1", features = ["rt-multi-thread", "macros", "net"] }
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
 uuid = { version = "1", features = ["v4", "serde"] }
+
+[profile.release]
+lto = "thin"        # cross-crate inlining for a faster, smaller binary
+codegen-units = 1   # better optimization at the cost of compile parallelism
+strip = true        # drop debug symbols from the release binary

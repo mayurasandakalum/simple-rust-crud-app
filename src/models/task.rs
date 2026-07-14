@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
-use std::sync::{Arc, Mutex};
+use std::sync::{Arc, RwLock};
 use uuid::Uuid;
 
 /// The resource this CRUD API manages.
@@ -27,6 +27,7 @@ pub struct UpdateTask {
 }
 
 /// Shared application state: a thread-safe, reference-counted map of
-/// task id -> Task. Arc allows cheap clones across handlers, Mutex
-/// serializes access so two requests can't corrupt the map at once.
-pub type Db = Arc<Mutex<HashMap<Uuid, Task>>>;
+/// task id -> Task. Arc allows cheap clones across handlers; RwLock
+/// lets any number of readers proceed in parallel while writers get
+/// exclusive access.
+pub type Db = Arc<RwLock<HashMap<Uuid, Task>>>;

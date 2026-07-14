@@ -20,7 +20,7 @@ pub async fn create_task(
     };
 
     // Scope the lock tightly: acquire, insert, clone what we need, drop.
-    db.lock().unwrap().insert(task.id, task.clone());
+    db.write().unwrap().insert(task.id, task.clone());
 
     (StatusCode::CREATED, Json(task))
 }
@@ -28,7 +28,7 @@ pub async fn create_task(
 /// GET /tasks
 /// Return every task currently stored.
 pub async fn list_tasks(State(db): State<Db>) -> Json<Vec<Task>> {
-    let tasks = db.lock().unwrap().values().cloned().collect::<Vec<_>>();
+    let tasks = db.read().unwrap().values().cloned().collect::<Vec<_>>();
     Json(tasks)
 }
 
@@ -38,7 +38,7 @@ pub async fn get_task(
     State(db): State<Db>,
     Path(id): Path<Uuid>,
 ) -> Result<Json<Task>, StatusCode> {
-    db.lock()
+    db.read()
         .unwrap()
         .get(&id)
         .cloned()
@@ -53,7 +53,7 @@ pub async fn update_task(
     Path(id): Path<Uuid>,
     Json(payload): Json<UpdateTask>,
 ) -> Result<Json<Task>, StatusCode> {
-    let mut tasks = db.lock().unwrap();
+    let mut tasks = db.write().unwrap();
 
     let task = tasks.get_mut(&id).ok_or(StatusCode::NOT_FOUND)?;
 
@@ -73,7 +73,7 @@ pub async fn delete_task(
     State(db): State<Db>,
     Path(id): Path<Uuid>,
 ) -> StatusCode {
-    let removed = db.lock().unwrap().remove(&id);
+    let removed = db.write().unwrap().remove(&id);
 
     match removed {
         Some(_) => StatusCode::NO_CONTENT,

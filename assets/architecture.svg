@@ -1,0 +1,84 @@
+<svg width="1100" height="430" viewBox="0 0 1100 430" fill="none" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, -apple-system, Helvetica, Arial, sans-serif">
+  <defs>
+    <linearGradient id="abg" x1="0" y1="0" x2="1100" y2="430" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#12121a"/>
+      <stop offset="1" stop-color="#1a1210"/>
+    </linearGradient>
+    <linearGradient id="orange" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#f74c00"/>
+      <stop offset="1" stop-color="#ffb86b"/>
+    </linearGradient>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0L10 5L0 10z" fill="#8b8b96"/>
+    </marker>
+  </defs>
+
+  <rect width="1100" height="430" rx="16" fill="url(#abg)"/>
+  <rect x="0.5" y="0.5" width="1099" height="429" rx="15.5" stroke="#ffffff" stroke-opacity="0.08"/>
+
+  <text x="550" y="46" text-anchor="middle" font-size="22" font-weight="700" fill="#f5efe8">Request Flow</text>
+
+  <!-- CLIENT -->
+  <g>
+    <rect x="50" y="150" width="180" height="130" rx="12" fill="#3b82f6" fill-opacity="0.10" stroke="#3b82f6" stroke-opacity="0.55" stroke-width="1.5"/>
+    <text x="140" y="185" text-anchor="middle" font-size="17" font-weight="700" fill="#93c5fd">Client</text>
+    <text x="140" y="212" text-anchor="middle" font-size="13" fill="#aab3c5">curl · browser ·</text>
+    <text x="140" y="231" text-anchor="middle" font-size="13" fill="#aab3c5">any HTTP client</text>
+    <text x="140" y="260" text-anchor="middle" font-size="12" font-family="Consolas, Menlo, monospace" fill="#7c8699">JSON over HTTP</text>
+  </g>
+
+  <!-- arrow client -> router -->
+  <path d="M230 205 H 300" stroke="#8b8b96" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="265" y="196" text-anchor="middle" font-size="11" font-family="Consolas, Menlo, monospace" fill="#8b8b96">:3000</text>
+  <path d="M300 245 H 230" stroke="#8b8b96" stroke-width="1.5" marker-end="url(#arrow)" stroke-dasharray="4 4"/>
+  <text x="265" y="264" text-anchor="middle" font-size="11" fill="#8b8b96">response</text>
+
+  <!-- ROUTER -->
+  <g>
+    <rect x="300" y="120" width="230" height="190" rx="12" fill="#f74c00" fill-opacity="0.10" stroke="#f74c00" stroke-opacity="0.6" stroke-width="1.5"/>
+    <text x="415" y="152" text-anchor="middle" font-size="17" font-weight="700" fill="#ffb86b">Axum Router</text>
+    <g font-size="12.5" font-family="Consolas, Menlo, monospace">
+      <text x="322" y="182" fill="#60a5fa">POST</text><text x="382" y="182" fill="#cfc7bd">/tasks</text>
+      <text x="322" y="206" fill="#4ade80">GET</text><text x="382" y="206" fill="#cfc7bd">/tasks</text>
+      <text x="322" y="230" fill="#4ade80">GET</text><text x="382" y="230" fill="#cfc7bd">/tasks/:id</text>
+      <text x="322" y="254" fill="#facc15">PUT</text><text x="382" y="254" fill="#cfc7bd">/tasks/:id</text>
+      <text x="322" y="278" fill="#f87171">DELETE</text><text x="382" y="278" fill="#cfc7bd">/tasks/:id</text>
+    </g>
+  </g>
+
+  <!-- arrow router -> handlers -->
+  <path d="M530 215 H 600" stroke="#8b8b96" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- HANDLERS -->
+  <g>
+    <rect x="600" y="120" width="200" height="190" rx="12" fill="#a855f7" fill-opacity="0.10" stroke="#a855f7" stroke-opacity="0.55" stroke-width="1.5"/>
+    <text x="700" y="152" text-anchor="middle" font-size="17" font-weight="700" fill="#d8b4fe">Handlers</text>
+    <g font-size="12.5" font-family="Consolas, Menlo, monospace" fill="#cfc7bd">
+      <text x="700" y="182" text-anchor="middle">create_task</text>
+      <text x="700" y="206" text-anchor="middle">list_tasks</text>
+      <text x="700" y="230" text-anchor="middle">get_task</text>
+      <text x="700" y="254" text-anchor="middle">update_task</text>
+      <text x="700" y="278" text-anchor="middle">delete_task</text>
+    </g>
+  </g>
+
+  <!-- arrows handlers -> store -->
+  <path d="M800 180 H 870" stroke="#4ade80" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="835" y="171" text-anchor="middle" font-size="11" fill="#4ade80">.read()</text>
+  <path d="M800 250 H 870" stroke="#facc15" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="835" y="271" text-anchor="middle" font-size="11" fill="#facc15">.write()</text>
+
+  <!-- STORE -->
+  <g>
+    <rect x="870" y="120" width="185" height="190" rx="12" fill="#22c55e" fill-opacity="0.08" stroke="#22c55e" stroke-opacity="0.5" stroke-width="1.5"/>
+    <text x="962" y="152" text-anchor="middle" font-size="16" font-weight="700" fill="#86efac">In-Memory Store</text>
+    <text x="962" y="186" text-anchor="middle" font-size="12.5" font-family="Consolas, Menlo, monospace" fill="#cfc7bd">Arc&lt;RwLock&lt;</text>
+    <text x="962" y="204" text-anchor="middle" font-size="12.5" font-family="Consolas, Menlo, monospace" fill="#cfc7bd">HashMap&lt;Uuid,</text>
+    <text x="962" y="222" text-anchor="middle" font-size="12.5" font-family="Consolas, Menlo, monospace" fill="#cfc7bd">Task&gt;&gt;&gt;</text>
+    <text x="962" y="256" text-anchor="middle" font-size="11.5" fill="#7c8699">parallel reads</text>
+    <text x="962" y="274" text-anchor="middle" font-size="11.5" fill="#7c8699">exclusive writes</text>
+  </g>
+
+  <!-- footer -->
+  <text x="550" y="380" text-anchor="middle" font-size="13" fill="#7c8699">Every handler clones an Arc pointer to the same map — no database, no I/O, microsecond reads.</text>
+</svg>
